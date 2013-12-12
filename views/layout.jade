@@ -1,0 +1,18 @@
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/jquery.mobile.min.css')
+    link(rel='stylesheet', href='/stylesheets/switches.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1")  
+    script(src='javascripts/jquery.min.js')
+    script(src='javascripts/jquery.mobile.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='javascripts/switches.js')
+  body
+    #outercontainer(data-role="page" data-theme="c")
+        #headercontainer(data-role="header" data-theme="c")
+            h1 Bin ready:
+        #contentcontainer(data-role="content" data-theme="c")
+            block content
