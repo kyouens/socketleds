@@ -35,8 +35,7 @@ function updateSwitchStatus() {
 
 function sendSwitchStatus() {
 //Send switch status to socket server
-//This could probably be done better with a socket emit function
-//because I wouldn't need to JSON stringify the array.
+//This could probably be done better--without JSON stringifying the array
     var switchJson = JSON.stringify(switchStatus);
 	socket.emit("updateHardwareSwitches",switchJson);
 }

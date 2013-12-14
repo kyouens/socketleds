@@ -5,10 +5,19 @@
 var express = require('express')
   , routes = require('./routes')
   , http = require('http');
-
 var app = express();
 var server = app.listen(3000);
 var io = require('socket.io').listen(server);
+
+// Node-serialport
+var SerialPort = require("serialport").SerialPort
+var serialPort = new SerialPort('/dev/ttyACM0', {
+   baudRate: 9600,
+   dataBits: 8,
+   parity: 'none',
+   stopBits: 1,
+   flowControl: false
+ });
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -30,7 +39,7 @@ app.get('/', routes.index);
 console.log("Express server listening on port 3000");
 
 //////////////////////////
-//Socket.io on 
+//Socket.io on
 //////////////////////////
 
 var serverSwitchStatus;
@@ -48,12 +57,12 @@ io.sockets.on('connection', function (socket) {
     socket.on('updateHardwareSwitches', function (switchJson) {
       serverSwitchStatus = switchJson;
       console.log("Received from client:" + switchJson);
-      socket.broadcast.emit('updateSoftwareSwitches', switchJson);  //Update connected clients
+      socket.broadcast.emit('updateSoftwareSwitches', switchJson);
 
     //Update ardiono hardware
-    //turn JSON back into javascript array
-    // Example:  var receivedSwitchStatus=JSON.parse(data);
-    //var switchStatus=JSON.parse(switchJson);
+    var serialString = JSON.stringify(serverSwitchStatus).replace(/[^\w\s]/gi, '');
+    console.log(serialString);
+    serialPort.write(serialString);
     });
 
 });
